@@ -20,7 +20,7 @@ public class UserService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Assert.hasLength(username, "Username cannot be empty.");
 		User user = userRepository.findById(username)
-				.orElseThrow(() -> new UsernameNotFoundException("Bamboo account can not be located!"));
+				.orElseThrow(() -> new UsernameNotFoundException("User account can not be located!"));
 		return user;
 	}
 
