@@ -1,10 +1,7 @@
 package com.utc.nda.authorizationserver.users.controllers;
 
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -29,25 +26,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.utc.nda.authorizationserver.users.dtos.UserModel;
 import com.utc.nda.authorizationserver.users.entities.User;
-import com.utc.nda.authorizationserver.users.entities.Verification;
+
 import com.utc.nda.authorizationserver.users.repositories.UserRepository;
-import com.utc.nda.authorizationserver.users.repositories.VerificationRepository;
 import com.utc.nda.authorizationserver.users.services.UserService;
-import com.utc.nda.notification.dtos.EmailMessage;
-import com.utc.nda.notification.dtos.NotificationMessage;
-import com.utc.nda.notification.services.NotificationService;
-import com.utc.nda.setting.services.SettingService;
 
 @RestController
 public class UserController {
 
 	private static final Log logger = LogFactory.getLog(UserController.class);
-
-	@Autowired
-	private SettingService settingService;
-
-	@Autowired
-	private NotificationService notificationService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -58,10 +44,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private VerificationRepository verificationRepository;
-
-	//@PreAuthorize("hasAnyRole('ROLE_MODERATOR','ROLE_ADMIN')")
+	// @PreAuthorize("hasAnyRole('ROLE_MODERATOR','ROLE_ADMIN')")
 	@GetMapping("/users")
 	@ResponseStatus(HttpStatus.OK)
 	public List<UserModel> listAllUsers() {
@@ -184,138 +167,19 @@ public class UserController {
 					String.format("User Password is invalid", user.getPassword()));
 		}
 
-		String allowedMailDomains = settingService.getSetting().getValidEmailDomains();
-		boolean isEmailDomainValid = false;
-		for (String allowedMailDomain : allowedMailDomains.split(",")) {
-			if (user.getEmail().toLowerCase().endsWith("@" + allowedMailDomain.toLowerCase())) {
-				isEmailDomainValid = true;
-				break;
-			}
-		}
 
 		user.setRole("ROLE_USER"); // registering users will always have role ROLE_USER.
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setEnabled(false);
 		userRepository.save(user);
-
-		if (isEmailDomainValid) {
-			initiateEmailVerificationInDomainUser(user);
-			HashMap<String, String> response = new HashMap<>();
-			response.put("message",
-					"Thank you for registering with Bamboo,  "
-							+ "A email verification link is sent to your registered email address, "
-							+ "kindly verify your email address to activate your account. ");
-			return ResponseEntity.status(200).body(response);
-		} else {
-			sendOutOfDomainUserNotifications(user);
-			HashMap<String, String> response = new HashMap<>();
-			response.put("message",
-					"Thank you for registering with Bamboo,  "
-							+ "your account is created successfully and is pending activation,  "
-							+ "you will be able to login once admin approve's and activates your account. "
-							+ "You will recieve a confirmation email when your account is activated. ");
-			return ResponseEntity.status(200).body(response);
-		}
-
-	}
-
-	public void initiateEmailVerificationInDomainUser(User user) {
-		Verification userEmailVerifier = new Verification();
-		userEmailVerifier.setId(UUID.randomUUID().toString());
-		userEmailVerifier.setUserName(user.getUsername());
-		userEmailVerifier.setCreationTime(new Date());
-		userEmailVerifier.setModificationTime(userEmailVerifier.getCreationTime());
-		userEmailVerifier.setTokenUsed(false);
-		verificationRepository.save(userEmailVerifier);
-
-		// user email notification
-		String emailverificationUrl = String.format(settingService.getSetting().getUiVerifyAccountEmailUrl(),
-				userEmailVerifier.getId());
-		String userEmailContent = String.format(settingService.getSetting().getEmailContentAccountEmailVerification(),
-				user.getFirstname(), emailverificationUrl);
-
-		EmailMessage userEmailMessage = new EmailMessage();
-		userEmailMessage.setSubject(settingService.getSetting().getEmailSubjectAccountEmailVerification());
-		userEmailMessage.setContent(userEmailContent);
-		userEmailMessage.setToEmails(Arrays.asList(user.getEmail()));
-		notificationService.sendEmail(userEmailMessage);
-	}
-
-	public void sendOutOfDomainUserNotifications(User user) {
-
-		// Send Portal Notifications
-		String adminNotificationContent = String.format(
-				settingService.getSetting().getAdminNotificationContentUserRegistered(), user.getUsername(),
-				user.getEmail());
-		String notificationTitle = settingService.getSetting().getAdminNotificationTitleUserRegistered();
-		String notificationType = "User-Account-Creation";
-
-		HashMap<String, String> attributes = new HashMap<String, String>();
-		attributes.put("user_name", user.getUsername());
-
-		// Notification to all users with role admin or moderator.
-		NotificationMessage adminNotification = new NotificationMessage();
-		adminNotification.setTitle(notificationTitle);
-		adminNotification.setContent(adminNotificationContent);
-		adminNotification.setType(notificationType);
-		adminNotification.setAttributes(attributes);
-		adminNotification.setToRoles(Arrays.asList("ROLE_ADMIN", "ROLE_MODERATOR"));
-		notificationService.sendNotification(adminNotification);
-
-		// Send Email Notifications
-		// Send email to all users with role admin or moderator.
-		String adminEmailContent = String.format(settingService.getSetting().getAdminEmailContentUserRegistered(),
-				user.getUsername(), user.getEmail());
-
-		EmailMessage adminEmailMessage = new EmailMessage();
-		adminEmailMessage.setSubject(settingService.getSetting().getAdminEmailSubjectUserRegistered());
-		adminEmailMessage.setContent(adminEmailContent);
-		adminEmailMessage.setToRoles(Arrays.asList("ROLE_ADMIN"));
-		adminEmailMessage.setCcRoles(Arrays.asList("ROLE_MODERATOR"));
-		notificationService.sendEmail(adminEmailMessage);
-
-		// user email notification
-		String userEmailContent = String.format(settingService.getSetting().getUserEmailContentUserRegistered(),
-				user.getFirstname(), user.getUsername());
-
-		EmailMessage userEmailMessage = new EmailMessage();
-		userEmailMessage.setSubject(settingService.getSetting().getUserEmailSubjectUserRegistered());
-		userEmailMessage.setContent(userEmailContent);
-		userEmailMessage.setToEmails(Arrays.asList(user.getEmail()));
-		notificationService.sendEmail(userEmailMessage);
-
-	}
-
-	@PostMapping("/public/account/email/verify/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public void verifyUserEmail(@PathVariable("id") String id) {
-
-		Verification emailVerifier = verificationRepository.findById(id).orElseThrow(
-				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid email verification token."));
-
-		if (emailVerifier.isTokenUsed()) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-					"Email verification token expired, valid for single use only!");
-		}
-
-		long activateUserLinkExpiryTimeInSeconds = Long
-				.valueOf(settingService.getSetting().getForgotPasswordLinkExpiryTimeInSeconds());
-		if (((new Date()).getTime() - emailVerifier.getCreationTime().getTime()) > activateUserLinkExpiryTimeInSeconds
-				* 1000) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Email verification token expired!");
-		}
-
-		String userName = emailVerifier.getUserName();
-		User user = userRepository.findById(userName)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
-		user.setEnabled(true);
-		userRepository.save(user);
-		emailVerifier.setModificationTime(new Date());
-		emailVerifier.setTokenUsed(true);
-		verificationRepository.save(emailVerifier);
-
-		sendAccountActivationNotifications(user);
-
+		
+		HashMap<String, String> response = new HashMap<>();
+		response.put("message",
+				"Thank you for registering with StackSimplify User Management,  "
+						+ "your account is created successfully and is pending activation,  "
+						+ "you will be able to login once admin approve's and activates your account. ");
+		return ResponseEntity.status(200).body(response);
+	
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -333,51 +197,6 @@ public class UserController {
 		user.setEnabled(true);
 		userRepository.save(user);
 
-		sendAccountActivationNotifications(user);
-
-	}
-
-	public void sendAccountActivationNotifications(User user) {
-		// Send Portal Notifications
-		String adminNotificationContent = String.format(
-				settingService.getSetting().getAdminNotificationContentUserActivated(), user.getUsername(),
-				user.getEmail());
-		String notificationTitle = settingService.getSetting().getNotificationTitleUserActivated();
-		String notificationType = "User-Account-Activation";
-
-		HashMap<String, String> attributes = new HashMap<String, String>();
-		attributes.put("user_name", user.getUsername());
-
-		// Notification to all users with role admin or moderator.
-		NotificationMessage adminNotification = new NotificationMessage();
-		adminNotification.setTitle(notificationTitle);
-		adminNotification.setContent(adminNotificationContent);
-		adminNotification.setType(notificationType);
-		adminNotification.setAttributes(attributes);
-		adminNotification.setToRoles(Arrays.asList("ROLE_ADMIN", "ROLE_MODERATOR"));
-		notificationService.sendNotification(adminNotification);
-
-		// Send Email Notifications
-		// Send email to all users with role admin or moderator.
-		String adminEmailContent = String.format(settingService.getSetting().getAdminEmailContentUserActivated(),
-				user.getUsername(), user.getEmail());
-
-		EmailMessage adminEmailMessage = new EmailMessage();
-		adminEmailMessage.setSubject(settingService.getSetting().getAdminEmailSubjectUserActivated());
-		adminEmailMessage.setContent(adminEmailContent);
-		adminEmailMessage.setToRoles(Arrays.asList("ROLE_ADMIN"));
-		adminEmailMessage.setCcRoles(Arrays.asList("ROLE_MODERATOR"));
-		notificationService.sendEmail(adminEmailMessage);
-
-		// user email notification
-		String userEmailContent = String.format(settingService.getSetting().getUserEmailContentUserActivated(),
-				user.getFirstname());
-
-		EmailMessage userEmailMessage = new EmailMessage();
-		userEmailMessage.setSubject(settingService.getSetting().getUserEmailSubjectUserActivated());
-		userEmailMessage.setContent(userEmailContent);
-		userEmailMessage.setToEmails(Arrays.asList(user.getEmail()));
-		notificationService.sendEmail(userEmailMessage);
 	}
 
 }
