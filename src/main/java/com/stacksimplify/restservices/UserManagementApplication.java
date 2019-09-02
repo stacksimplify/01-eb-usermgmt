@@ -1,4 +1,4 @@
-package com.utc.nda;
+package com.stacksimplify.restservices;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,10 +11,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 //@EnableScheduling
 @EnableResourceServer
-public class UtcNdaP2BeApplication {
+public class UserManagementApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UtcNdaP2BeApplication.class, args);
+		SpringApplication.run(UserManagementApplication.class, args);
 	}
 
 }

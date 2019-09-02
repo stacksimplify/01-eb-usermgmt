@@ -1,4 +1,4 @@
-package com.utc.nda.authorizationserver.users.controllers;
+package com.stacksimplify.restservices.authorizationserver.users.controllers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,11 +24,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.utc.nda.authorizationserver.users.dtos.UserModel;
-import com.utc.nda.authorizationserver.users.entities.User;
-
-import com.utc.nda.authorizationserver.users.repositories.UserRepository;
-import com.utc.nda.authorizationserver.users.services.UserService;
+import com.stacksimplify.restservices.authorizationserver.users.dtos.UserModel;
+import com.stacksimplify.restservices.authorizationserver.users.entities.User;
+import com.stacksimplify.restservices.authorizationserver.users.repositories.UserRepository;
+import com.stacksimplify.restservices.authorizationserver.users.services.UserService;
 
 @RestController
 public class UserController {

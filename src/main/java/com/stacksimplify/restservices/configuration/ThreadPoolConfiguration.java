@@ -1,4 +1,4 @@
-package com.utc.nda.configuration;
+package com.stacksimplify.restservices.configuration;
 
 import java.util.concurrent.Executor;
 

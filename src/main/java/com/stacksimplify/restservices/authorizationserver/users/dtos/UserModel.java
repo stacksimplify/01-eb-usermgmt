@@ -1,4 +1,4 @@
-package com.utc.nda.authorizationserver.users.dtos;
+package com.stacksimplify.restservices.authorizationserver.users.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

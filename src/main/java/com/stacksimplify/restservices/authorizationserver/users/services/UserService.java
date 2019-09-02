@@ -1,4 +1,4 @@
-package com.utc.nda.authorizationserver.users.services;
+package com.stacksimplify.restservices.authorizationserver.users.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.utc.nda.authorizationserver.users.entities.User;
-import com.utc.nda.authorizationserver.users.repositories.UserRepository;
+import com.stacksimplify.restservices.authorizationserver.users.entities.User;
+import com.stacksimplify.restservices.authorizationserver.users.repositories.UserRepository;
 
 @Service("userDetailsService")
 public class UserService implements UserDetailsService {

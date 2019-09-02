@@ -1,4 +1,4 @@
-package com.utc.nda.authorizationserver.configuration;
+package com.stacksimplify.restservices.authorizationserver.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

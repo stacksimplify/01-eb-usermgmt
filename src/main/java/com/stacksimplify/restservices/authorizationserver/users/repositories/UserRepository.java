@@ -1,11 +1,11 @@
-package com.utc.nda.authorizationserver.users.repositories;
+package com.stacksimplify.restservices.authorizationserver.users.repositories;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.utc.nda.authorizationserver.users.entities.User;
+import com.stacksimplify.restservices.authorizationserver.users.entities.User;
 
 public interface UserRepository extends JpaRepository<User, String> {
 

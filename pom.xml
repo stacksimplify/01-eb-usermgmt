@@ -9,11 +9,11 @@
 		<version>2.1.4.RELEASE</version>
 		<relativePath />
 	</parent>
-	<groupId>com.utc</groupId>
+	<groupId>com.stacksimplify</groupId>
 	<artifactId>usermgmt-react-backend-springboot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>bamboo</name>
-	<description>NDA phase 2</description>
+	<description>User management Application</description>
 
 	<properties>
 		<java.version>1.8</java.version>

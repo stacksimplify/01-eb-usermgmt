@@ -1,4 +1,4 @@
-package com.utc.nda.authorizationserver.users.entities;
+package com.stacksimplify.restservices.authorizationserver.users.entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
