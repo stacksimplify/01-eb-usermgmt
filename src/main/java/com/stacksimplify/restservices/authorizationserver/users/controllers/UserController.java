@@ -55,6 +55,8 @@ public class UserController {
 			user.setEmail(u.getEmail());
 			user.setRole(u.getAuthorities().stream().findFirst().get().getAuthority());
 			user.setEnabled(u.isEnabled());
+			user.setFirstname(u.getFirstname());
+			user.setLastname(u.getLastname());
 			return user;
 		}).collect(Collectors.toList());
 		return filteredUsers;
