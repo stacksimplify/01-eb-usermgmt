@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 //@EnableScheduling
-@EnableResourceServer
+//@EnableResourceServer
 public class UserManagementApplication {
 
 	public static void main(String[] args) {

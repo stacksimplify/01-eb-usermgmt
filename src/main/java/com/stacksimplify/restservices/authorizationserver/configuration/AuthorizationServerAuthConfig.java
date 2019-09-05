@@ -16,6 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class AuthorizationServerAuthConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder(4);
+	}
+	
+	/*
+	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
@@ -38,14 +44,11 @@ public class AuthorizationServerAuthConfig extends WebSecurityConfigurerAdapter 
 		return authProvider;
 	}
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder(4);
-	}
+*/
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-	    web.ignoring().antMatchers("/public/**", "/error**", "/actuator**", "/favicon.ico");
+	    web.ignoring().antMatchers("/public/**", "/error**", "/actuator**", "/favicon.ico", "/users**", "/user**", "/user/**", "/status/**");
 	}
 	
 

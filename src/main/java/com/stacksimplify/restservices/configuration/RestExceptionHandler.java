@@ -202,7 +202,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		} else {
 			ApiError apiError = new ApiError(HttpStatus.FORBIDDEN);
 			apiError.setMessage(
-					"Access denied. If you think you should have access to this resource, please contact NDA mailbox.");
+					"Access denied. If you think you should have access to this resource, please contact stacksimplify support.");
 			apiError.setDebugMessage(ex.getMessage());
 			return buildResponseEntity(apiError);
 		}
@@ -231,7 +231,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		} else {
 			ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
 			apiError.setMessage(
-					"Something went wrong, Please try again later! If the problem persists, please contact NDA mailbox.");
+					"Something went wrong, Please try again later! If the problem persists, please contact stacksimplify support.");
 			apiError.setDebugMessage(ex.getMessage());
 			return buildResponseEntity(apiError);
 		}
