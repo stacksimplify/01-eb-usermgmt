@@ -18,7 +18,7 @@ public class HelloWorldController {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
         String strDate = dateFormat.format(date);
         
-		return "Hello World-CICD-V3: "+strDate;
+		return "Hello World-CICD-V4: "+strDate;
 	}
 	
 }
