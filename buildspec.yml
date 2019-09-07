@@ -18,4 +18,4 @@ phases:
       - echo "Post Build phase -  No commands to execute"
 artifacts:
   files:
-    - 'target/usermgmt-react-backend-springboot-0.0.1-SNAPSHOT'  
+    - 'target/usermgmt-react-backend-springboot-0.0.1-SNAPSHOT.jar'  
