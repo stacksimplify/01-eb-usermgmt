@@ -23,6 +23,9 @@ public class UserModel {
 	
 	@JsonProperty("lastname")
 	private String lastname;
+
+	@JsonProperty("appversion")
+	private String appversion;
 	
 	
 	public String getUsername() {
@@ -72,4 +75,16 @@ public class UserModel {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
+
+	public String getAppversion() {
+		return appversion;
+	}
+
+	public void setAppversion(String appversion) {
+		this.appversion = appversion;
+	}
+	
+	
+	
+	
 }
