@@ -26,3 +26,6 @@
 
 ### test log file ###
 *.log
+
+## 
+/.ebextensions/
