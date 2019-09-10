@@ -57,7 +57,7 @@ public class UserController {
 			user.setEnabled(u.isEnabled());
 			user.setFirstname(u.getFirstname());
 			user.setLastname(u.getLastname());
-			user.setAppversion("V3-CICD");
+			user.setAppversion("V4-CICD");
 			return user;
 		}).collect(Collectors.toList());
 		return filteredUsers;
