@@ -82,7 +82,7 @@ public class UserController {
 		return userModel;
 	}
 
-	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping("/user")
 	@ResponseStatus(HttpStatus.OK)
 	public void createUser(@RequestBody @Valid User user) {
