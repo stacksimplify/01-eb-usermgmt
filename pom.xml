@@ -10,9 +10,8 @@
 		<relativePath />
 	</parent>
 	<groupId>com.stacksimplify</groupId>
-	<artifactId>usermgmt-react-backend-springboot</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>bamboo</name>
+	<artifactId>01-eb-usermgmt</artifactId>
+	<name>usermgmt</name>
 	<description>User management Application</description>
 
 	<properties>
@@ -211,6 +210,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>eb-usermgmt</finalName>
 	</build>
 
 </project>

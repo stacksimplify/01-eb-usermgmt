@@ -20,7 +20,7 @@ public class AuthorizationServerAuthConfig extends WebSecurityConfigurerAdapter 
 		return new BCryptPasswordEncoder(4);
 	}
 	
-	
+	/*
 	
 	@Bean
 	@Override
@@ -52,7 +52,7 @@ public class AuthorizationServerAuthConfig extends WebSecurityConfigurerAdapter 
 	    web.ignoring().antMatchers("/public/**", "/error**", "/actuator**",	"/favicon.ico");
 	}
 	
-	/*
+	*/
 
 	
 	//UnProtected
@@ -62,7 +62,7 @@ public class AuthorizationServerAuthConfig extends WebSecurityConfigurerAdapter 
 	    		"/favicon.ico", "/users**", "/user**", "/user/**", "/status/**", "/h2-console/**", "/hello**");
 	}
 	
-	*/
+	
 	
 }
 

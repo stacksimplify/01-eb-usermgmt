@@ -63,7 +63,7 @@ public class UserController {
 		return filteredUsers;
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_MODERATOR','ROLE_ADMIN')")
+	//@PreAuthorize("hasAnyRole('ROLE_MODERATOR','ROLE_ADMIN')")
 	@GetMapping("/user/{username}")
 	@ResponseStatus(HttpStatus.OK)
 	public UserModel getUserByUsername(@PathVariable("username") String userName) {
@@ -82,7 +82,7 @@ public class UserController {
 		return userModel;
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping("/user")
 	@ResponseStatus(HttpStatus.OK)
 	public void createUser(@RequestBody @Valid User user) {
@@ -103,7 +103,7 @@ public class UserController {
 		userRepository.save(user);
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PutMapping("/user")
 	@ResponseStatus(HttpStatus.OK)
 	public void updateUser(@RequestBody @Valid User user) {
@@ -125,7 +125,7 @@ public class UserController {
 		userRepository.save(u);
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping("/user/{username}")
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteUser(@PathVariable("username") String userName) {
@@ -138,7 +138,7 @@ public class UserController {
 		}
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@GetMapping("/status/{username}")
 	@ResponseStatus(HttpStatus.OK)
 	public void changeUserStatus(@PathVariable("username") String userName) {
@@ -185,7 +185,7 @@ public class UserController {
 	
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@GetMapping("/user/activate/{username}")
 	@ResponseStatus(HttpStatus.OK)
 	public void activateUser(@PathVariable("username") String userName) {
