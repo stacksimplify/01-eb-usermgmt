@@ -59,7 +59,7 @@ public class AuthorizationServerAuthConfig extends WebSecurityConfigurerAdapter 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 	    web.ignoring().antMatchers("/public/**", "/error**", "/health/**","/actuator**", 
-	    		"/favicon.ico", "/users**", "/user**", "/user/**", "/status/**", "/h2-console/**", "/hello**");
+	    		"/favicon.ico", "/users**", "/user**", "/user/**", "/status/**", "/h2-console/**", "/hello**", "/app1/**", "/app2/**");
 	}
 	
 	
