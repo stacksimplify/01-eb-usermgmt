@@ -210,7 +210,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>eb-usermgmt-h2-v3</finalName>
+		<finalName>eb-usermgmt-h2-loadbalancer-v1</finalName>
 	</build>
 
 </project>
